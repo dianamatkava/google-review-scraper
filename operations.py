@@ -24,10 +24,28 @@ class GoogleReviews:
         try:
             self.driver.get('?q='.join([URL, text]))
             self.driver.implicitly_wait(10)
-            link = self.driver.find_element(By.XPATH, "//div[@class='rT66Dc']/following-sibling::div")
-            if link:
-                link.click()
-            print(link.text)
+            link = self.driver.find_element(
+                By.XPATH,
+                "//div[@class='ObqRqd']/following-sibling::div/span[2]/span[1]/span"
+            )
+            link.click()
+            rating = self.driver.find_element(
+                By.XPATH,
+                "//div[@class='jANrlb']/div"
+            ).text
+
+            scroll_pause_time = 1
+            screen_height = self.driver.execute_script("return window.screen.height;")
+
+            reviews = self.driver.find_element(
+                By.XPATH,
+                "//div[@class='m6QErb']"
+            )
+
+            print(rating)    # 4.3 rating
+            print(link.text) # 745 comments
+            print(reviews.__dict__)
+            print(reviews.page_source)
 
 
             import time
