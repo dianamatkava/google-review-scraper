@@ -1,17 +1,17 @@
 from __future__ import annotations
-import pandas as pd
-from selenium import webdriver
-from bs4 import BeautifulSoup
-from operations import GoogleReviews
+from xlswriter import generate_xls
+from operations import GoogleReviewScraper
 
 
 
 
 def run():
-    review = GoogleReviews()
-    review.search("Aspria Berlin Ku’damm")
-    pass
-
+    review = GoogleReviewScraper()
+    res = review.search("Aspria Berlin Ku’damm")
+    if res.status_code == 200:
+        review.scroll_all_reviews()
+        google_reviews = review.scrap_data()
+        generate_xls(google_reviews)
 
 
 if __name__ == '__main__':
