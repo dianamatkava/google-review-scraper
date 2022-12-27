@@ -3,7 +3,7 @@ import pandas as pd
 
 def generate_xls(google_reviews):
     if google_reviews.reviews:
-        writer = pd.ExcelWriter('reviews.xlsx', engine='xlsxwriter')
+        writer = pd.ExcelWriter('output/reviews.xlsx', engine='xlsxwriter')
         df_data = dict()
         {
             df_data.update(

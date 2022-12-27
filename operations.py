@@ -60,7 +60,7 @@ class GoogleReviewScraper:
             )
             review_amount = link.text.split(' ')[0]
             link.click()
-
+            time.sleep(2)
             rating = self.driver.find_element(
                 By.XPATH,
                 "//div[@class='jANrlb']/div"
@@ -73,11 +73,12 @@ class GoogleReviewScraper:
 
     def scroll_all_reviews(self):
         while True:
-            time.sleep(2)
             self.driver.execute_script(
                 "document.getElementsByClassName('dS8AEf')[0].scrollTop = document.getElementsByClassName('dS8AEf')[0].scrollHeight"
             )
+            time.sleep(2)
             reviews = self.driver.find_elements(By.CLASS_NAME, 'wiI7pd')
+            print('Found #reviews', len(reviews))
             if len(reviews) >= 18:    #self.google_review.len_review
                 break
         return
@@ -86,13 +87,21 @@ class GoogleReviewScraper:
         reviews = self.driver.find_elements(By.CLASS_NAME, 'jftiEf')
         review_data = list()
         for i in range(len(reviews)):
+            more = reviews[i].find_elements(By.CLASS_NAME, 'w8nwRe')
+            if more:
+                more[0].click()
+            reply = reviews[i].find_elements(By.CLASS_NAME, 'CDe7pd')
             review = Review()
             review_data = reviews[i].text.split('\n')
-
             for field, id in review.fields.items():
                 if isinstance(id, list):
                     review.raw_review[field] = '\n'.join(review_data[id[0]:id[1]])
                 elif id < len(review_data):
                     review.raw_review[field] = review_data[id]
+            print('Parsing review of %s' % review.raw_review['reviewer_name'])
+            if reply:
+                reply_data = reply[0].text.split('\n')
+                review.raw_review['replied_by'] = reply_data[0]
+                review.raw_review['reply_content'] = '\n'.join(reply_data[1::])
             self.google_review.reviews.append(review)
         return self.google_review

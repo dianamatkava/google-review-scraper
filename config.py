@@ -4,7 +4,11 @@ review_fields = {
     'review_score': 2,
     'date': 3,
     'posted_in': 4,
-    'review_content': 6,
+    'review_content': [6, -1],
+}
+
+reply_fields = {
     'replied_by': 10,
     'reply_content': [11, -1]
 }
+
