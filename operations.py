@@ -73,10 +73,10 @@ class GoogleReviewScraper:
 
     def scroll_all_reviews(self):
         while True:
+            time.sleep(2)
             self.driver.execute_script(
                 "document.getElementsByClassName('dS8AEf')[0].scrollTop = document.getElementsByClassName('dS8AEf')[0].scrollHeight"
             )
-            time.sleep(2)
             reviews = self.driver.find_elements(By.CLASS_NAME, 'wiI7pd')
             if len(reviews) >= 18:    #self.google_review.len_review
                 break
@@ -84,11 +84,11 @@ class GoogleReviewScraper:
 
     def scrap_data(self):
         reviews = self.driver.find_elements(By.CLASS_NAME, 'jftiEf')
-
         review_data = list()
-        for i in range(len(reviews)-10):
+        for i in range(len(reviews)):
             review = Review()
-            review_data.append(reviews[i].text.split('\n'))
+            review_data = reviews[i].text.split('\n')
+
             for field, id in review.fields.items():
                 if isinstance(id, list):
                     review.raw_review[field] = '\n'.join(review_data[id[0]:id[1]])

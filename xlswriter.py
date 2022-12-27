@@ -7,7 +7,7 @@ def generate_xls(google_reviews):
         df_data = dict()
         {
             df_data.update(
-                {id: google_reviews.reviews[id]}
+                {id: google_reviews.reviews[id].raw_review}
             ) for id in range(len(google_reviews.reviews))
         }
         df = pd.DataFrame.from_dict(df_data, orient='index')
