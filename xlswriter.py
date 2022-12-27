@@ -1,4 +1,3 @@
-import xlsxwriter
 import pandas as pd
 
 def generate_xls(google_reviews):
